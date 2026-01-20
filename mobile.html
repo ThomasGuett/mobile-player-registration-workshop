@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- form.js stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com/@bpmn-io/form-js@1.17.0/dist/assets/form-js.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFB Spieler*in Registrierung</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 15px 20px;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .dfb-logo {
+            width: 100px;
+            height: 100px;
+            background: #005f5a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+        
+        .dfb-logo::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        
+        .dfb-logo::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: white;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        
+        .dfb-logo .text {
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #005f5a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #005f5a;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #d0d0d0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #005f5a;
+            box-shadow: 0 0 0 3px rgba(0, 95, 90, 0.2);
+        }
+        
+        .submit-btn {
+            background: #005f5a;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        .submit-btn:hover {
+            background: #004b46;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 95, 90, 0.25);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 15px;
+            font-size: 13px;
+            color: #666;
+            margin-top: 15px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .footer .dfb {
+            color: #005f5a;
+            font-weight: 600;
+        }
+        
+        .info-box {
+            background: #e9f7ff;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+            border-left: 4px solid #005f5a;
+        }
+        
+        .info-box h2 {
+            color: #005f5a;
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-box h2 i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .info-box p {
+            margin: 0;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 15px;
+            background: #d4f0d4;
+            border-radius: 10px;
+            margin: 15px 0;
+            color: #1a6e1a;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 15px;
+            background: #ffdddd;
+            border-radius: 10px;
+            margin: 15px 0;
+            color: #a30000;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .info-box {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <span><img src="./DFB-Logo-Rebranding-2025.png" width="80px"></span>
+            </div>
+            <h1>DFB Spieler*in Registrierung</h1>
+            <p class="subtitle">Gib deine Daten ein, um an der DFB-Pokal-Verlosung teilzunehmen</p>
+        </header>
+        
+        <div class="info-box">
+            <h2><i class="fas fa-info-circle"></i> Wichtig!</h2>
+        <div class="info-box">
+            <h2><i class="fas fa-info-circle"></i> Wichtig!</h2>
+            <p>Du erhältst nach der Registrierung eine Bestätigung per E-Mail.</p>
+        </div>
+        
+        <!-- <div class="form-container">
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="playerName">Spieler*in Name</label>
+                    <input type="text" id="playerName" name="playerName" placeholder="Gib deinen Namen ein" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-Mail Adresse</label>
+                    <input type="email" id="email" name="email" placeholder="Deine E-Mail-Adresse" required>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-check-circle"></i> Registrieren
+                    </button>
+                </div>
+            </form>
+        </div> -->
+
+        <div class="form-container">
+            <div id="registrationForm"></div>
+        </div>
+        
+        
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> Registrierung erfolgreich! 
+            Überprüfe bitte deine E-Mail für Bestätigung.
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> Fehler bei der Registrierung. Bitte versuche es erneut.
+        </div>
+        
+        <div class="footer">
+            <p>Dieses Formular ist offiziell vom <span class="dfb">Deutschen Fussball-Bund</span> (DFB)</p>
+            <p>© 2026 DFB - <a href="#" style="color: #005f5a; text-decoration: none;">Datenschutzerklärung</a></p>
+        </div>
+    </div>
+
+    <!--
+      required viewer script
+    -->
+    <script src="https://unpkg.com/@bpmn-io/form-js@1.17.0/dist/form-viewer.umd.js"></script>
+
+    <script src="./credentials.js" type="js"></script>
+
+    <script>
+        // Function to get URL parameters
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const audience = "zeebe.camunda.io";
+
+            const clientId = "";
+            const clientSecret = "";
+            const region = ""
+            const clusterId = ""
+            
+            const processId = getQueryParam('processId');
+
+            const form = document.getElementById('registrationForm');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Step 1: Get access token
+            try {
+                const tokenResponse = await fetch('https://login.cloud.camunda.io/oauth/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        grant_type: 'client_credentials',
+                        audience: 'zeebe.camunda.io',
+                        client_id: clientId,
+                        client_secret: clientSecret
+                    })
+                });
+
+                if (!tokenResponse.ok) {
+                    throw new Error(`Token request failed: ${tokenResponse.status}`);
+                }
+
+                const tokenData = await tokenResponse.json();
+                const accessToken = tokenData.access_token;
+
+                // Step 2: Get user tasks
+                const tasksResponse = await fetch(`https://${region}.tasklist.camunda.io/${clusterId}/v2/user-tasks/search`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        filter: {
+                            processDefinitionId: processId
+                        }
+                    })
+                });
+
+                if (!tasksResponse.ok) {
+                    throw new Error(`User tasks request failed: ${tasksResponse.status}`);
+                }
+
+                const tasksData = await tasksResponse.json();
+                const userTaskKey = tasksData.items[0].userTaskKey;
+                //console.log("userTaskKey: ", tasksData.items[0].userTaskKey)
+
+                const taskFormResponse = await fetch(`https://${region}.tasklist.camunda.io/${clusterId}/v2/user-tasks/${userTaskKey}/form`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!taskFormResponse.ok) {
+                    throw new Error(`User task form request failed: ${taskFormResponse.status}`);
+                }
+
+                const taskFormData = await taskFormResponse.json();
+                const formSchema = await taskFormData.schema;
+
+                const container = document.querySelector('#registrationForm');
+                //console.log("form schema: ", formSchema)
+                //console.log("container: ", container)
+                const schema = JSON.parse(formSchema)
+
+                FormViewer.createForm({
+                    container,
+                    schema
+                });
+
+                //displayResponse('Success!', 'User tasks retrieved:', taskFormData);
+
+            } catch (error) {
+                //displayResponse('Error', 'Failed to retrieve data:', error.message);
+            }
+            
+            /* form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Basic validation
+                const playerName = document.getElementById('playerName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                
+                if (!playerName || !email) {
+                    showErrorMessage('Bitte fülle alle Felder aus');
+                    return;
+                }
+                
+                // Email format validation
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    showErrorMessage('Bitte gib eine gültige E-Mail-Adresse ein');
+                    return;
+                }
+                
+                // Show loading state
+                const button = form.querySelector('.submit-btn');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Senden...';
+                button.disabled = true;
+                
+                // Simulate API call (in real scenario, you'd use fetch/axios)
+                setTimeout(() => {
+                    // In a real application, this would be a fetch request
+                    // const data = {
+                    //     playerName: playerName,
+                    //     email: email
+                    // };
+                    // fetch('https://console.cloud.camunda.io', {
+                    //     method: 'POST',
+                    //     headers: {
+                    //         'Content-Type': 'application/json'
+                    //     },
+                    //     body: JSON.stringify(data)
+                    // })
+                    // .then(response => {
+                    //     if (response.ok) {
+                    //         showSuccessMessage();
+                    //     } else {
+                    //         showErrorMessage();
+                    //     }
+                    // })
+                    // .catch(error => {
+                    //     showErrorMessage();
+                    // });
+                    
+                    // For demo purposes, we're using a 20% chance of success
+                    const success = Math.random() > 0.2;
+                    if (success) {
+                        showSuccessMessage();
+                    } else {
+                        showErrorMessage();
+                    }
+                    
+                    button.innerHTML = '<i class="fas fa-check-circle"></i> Registrieren';
+                    button.disabled = false;
+                }, 1500);
+            });
+            
+            function showSuccessMessage() {
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    form.reset();
+                }, 5000);
+            }
+            
+            function showErrorMessage(message = 'Fehler bei der Registrierung. Bitte versuche es erneut.') {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            } */
+        });
+    </script>
+</body>
+</html>
